@@ -5,9 +5,13 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard --fix"
   },
   "keywords": [],
   "author": "Maksym Shenderuk <jaood96@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^17.1.0"
+  }
 }
