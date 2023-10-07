@@ -5,7 +5,7 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-  "start": "node --env-file=.env main.js",
+    "start": "node --env-file=.env main.js",
     "test": "standard && node --test .",
     "lint": "standard --fix"
   },
@@ -14,5 +14,8 @@
   "license": "MIT",
   "devDependencies": {
     "standard": "^17.1.0"
+  },
+  "dependencies": {
+    "p-queue": "^7.4.1"
   }
 }
