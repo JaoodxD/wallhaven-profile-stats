@@ -1,6 +1,7 @@
 import Wallhaven from './lib/wallhaven.js'
 import LocalStorage from './lib/localStorage.js'
 import ProgressBar from 'progress'
+import { setTimeout } from 'node:timers/promises'
 
 const storage = LocalStorage('Jaood')
 
@@ -21,19 +22,29 @@ for (const collection of collections) {
   do {
     currentPage++
     const { data, meta } = await wh.collectionInfo(id, currentPage)
+    if (!data) {
+      await setTimeout(5000)
+      continue
+    }
     lastPage = meta.last_page
 
     for (const image of data) {
       const { id, url, path, colors } = image
+      const exists = storage.imageExists(id)
+      bar.tick(1)
+      if (exists) continue
       const result = storage.addImage({ id, colors, path, url })
       const imageId = result.id
       const tags = await wh.wpTags(id)
+      if (!tags) {
+        await setTimeout(5000)
+        continue
+      }
       for (const tag of tags) {
         const { id: tagId, name } = tag
         storage.addTag({ name, id: tagId })
         storage.addImageTag({ imageId, tagId })
       }
-      bar.tick(1)
     }
   } while (currentPage !== lastPage)
   bar.terminate()
