@@ -3,10 +3,11 @@ import LocalStorage from './lib/localStorage.js'
 import ProgressBar from 'progress'
 import { setTimeout } from 'node:timers/promises'
 
-const storage = LocalStorage('Jaood')
 
 const API_KEY = process.env.WALLHAVEN_API_KEY
-const wh = Wallhaven(API_KEY, 'Jaood')
+const USERNAME = process.env.WALLHAVEN_USERNAME
+const wh = Wallhaven(API_KEY, USERNAME)
+const storage = LocalStorage(USERNAME)
 
 const collections = await wh.userCollections()
 console.log(collections)
