@@ -3,7 +3,6 @@ import LocalStorage from './lib/localStorage.js'
 import ProgressBar from 'progress'
 import { setTimeout } from 'node:timers/promises'
 
-
 const API_KEY = process.env.WALLHAVEN_API_KEY
 const USERNAME = process.env.WALLHAVEN_USERNAME
 const wh = Wallhaven(API_KEY, USERNAME)
@@ -36,7 +35,14 @@ for (const collection of collections) {
       if (exists) continue
       const result = storage.addImage({ id, colors, path, url })
       const imageId = result.id
-      const tags = await wh.wpTags(id)
+      let tags
+      try {
+        tags = await wh.wpTags(id)
+      } catch (error) {
+        console.log(error)
+        await setTimeout(5000)
+        tags = await wh.wpTags(id)
+      }
       if (!tags) {
         await setTimeout(5000)
         continue
