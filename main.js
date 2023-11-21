@@ -27,12 +27,15 @@ for (const collection of collections) {
       continue
     }
     lastPage = meta.last_page
-
+    let skipped = 0
     for (const image of data) {
       const { id, url, path, colors } = image
       const exists = storage.imageExists(id)
       bar.tick(1)
-      if (exists) continue
+      if (exists) {
+        skipped++
+        continue
+      }
       const result = storage.addImage({ id, colors, path, url })
       const imageId = result.id
       let tags
@@ -53,6 +56,7 @@ for (const collection of collections) {
         storage.addImageTag({ imageId, tagId })
       }
     }
+    if (skipped === data.length) break
   } while (currentPage !== lastPage)
   bar.terminate()
   console.timeEnd(label)
