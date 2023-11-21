@@ -10,6 +10,7 @@ const storage = LocalStorage(USERNAME)
 
 const collections = await wh.userCollections()
 console.log(collections)
+let total = 0
 console.time('total')
 for (const collection of collections) {
   const { id, label, count } = collection
@@ -38,6 +39,7 @@ for (const collection of collections) {
       }
       const result = storage.addImage({ id, colors, path, url })
       const imageId = result.id
+      total++
       let tags
       try {
         tags = await wh.wpTags(id)
@@ -62,5 +64,5 @@ for (const collection of collections) {
   console.timeEnd(label)
 }
 console.timeEnd('total')
-
+console.log('total new images info collected', total)
 storage.close()
