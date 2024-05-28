@@ -40,18 +40,10 @@ for (const collection of collections) {
       const result = storage.addImage({ id, colors, path, url })
       const imageId = result.id
       total++
-      let tags
-      try {
-        tags = await wh.wpTags(id)
-      } catch (error) {
-        console.log(error)
-        await setTimeout(5000)
-        tags = await wh.wpTags(id)
-      }
-      if (!tags) {
-        await setTimeout(5000)
-        continue
-      }
+      const tags = await wh.wpTags(id)
+
+      if (!tags) continue
+
       for (const tag of tags) {
         const { id: tagId, name } = tag
         storage.addTag({ name, id: tagId })
